@@ -1,0 +1,336 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>MiMiMi - Elevator Pitch</title>
+
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.css" id="theme">
+
+		<!-- Google Font: Inter -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+		<style>
+			/* --- :root - Глобальные переменные для легкого управления дизайном --- */
+			:root {
+				--font-family-sans: 'Inter', sans-serif;
+				--color-primary: #f16363; /* Indigo */
+				--color-secondary: #ff5353; /* Violet */
+				--color-text-dark: #1F2937;  /* Cool Gray 800 */
+				--color-text-light: #4B5563; /* Cool Gray 600 */
+				--card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+				--border-radius-lg: 24px;
+				--border-radius-md: 16px;
+			}
+	
+			/* --- Общие стили --- */
+			.reveal {
+				font-family: var(--font-family-sans);
+				color: var(--color-text-dark);
+			}
+	
+			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+				text-transform: none;
+				font-weight: 800;
+				color: var(--color-text-dark);
+				margin-bottom: 15px; 
+				line-height: 1.2; /* Немного уменьшим межстрочный интервал для заголовков */
+			}
+	
+			.reveal p {
+				color: var(--color-text-light);
+				font-weight: 400;
+				margin-bottom: 15px; 
+				line-height: 1.5; /* Стандартный межстрочный интервал для параграфов */
+			}
+			
+			.reveal strong {
+				font-weight: 700;
+				color: var(--color-primary);
+			}
+	
+			/* --- Градиентный текст для заголовков --- */
+			.gradient-text {
+				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+				text-fill-color: transparent;
+			}
+	
+			/* --- Стили для слайдов --- */
+			.reveal .slides section {
+				padding: 30px 60px; 
+				display: flex;
+				flex-direction: column;
+				justify-content: center; /* Вернул центрирование по вертикали по умолчанию */
+				align-items: center; 
+				height: 100%; 
+				box-sizing: border-box; 
+				text-align: center; 
+				overflow: hidden; /* Добавлено: предотвращает прокрутку на уровне всего слайда */
+			}
+			
+			/* --- Стили для изображений и логотипов --- */
+			.reveal section img {
+				min-height: 0; 
+				min-width: 0;  
+				
+				/* Немного уменьшим max-height еще раз, чтобы дать больше места */
+				max-height: 45vh; /* Было 55vh, теперь 45vh */
+				max-width: 85%;  
+				object-fit: contain; 
+	
+				border: none;
+				background: none;
+				box-shadow: none;
+				margin: 15px 0; /* Уменьшены отступы */
+				box-sizing: border-box; 
+				flex-shrink: 0; /* Изображение не будет сжиматься, текст и другие блоки будут */
+			}
+			
+			.reveal .card-image {
+				border-radius: var(--border-radius-lg);
+				box-shadow: var(--card-shadow);
+			}
+	
+			#main-logo {
+				max-height: 250px;
+				margin-bottom: 40px;
+				flex-shrink: 0; /* Логотип тоже не должен сжиматься */
+			}
+			
+			/* Стили для специфических проблемных слайдов */
+			/* Слайды: 4, 5, 6, 7, 8 - где есть комбинация текста/блоков и изображения */
+			.reveal .slides section:nth-child(n+4):nth-child(-n+8) {
+				justify-content: space-evenly; /* Попробуем space-evenly для равномерного распределения */
+				/* flex-direction: column; уже есть */
+			}
+	
+			.reveal .slides section:nth-child(n+4):nth-child(-n+8) > * {
+				/* Применяем flex-shrink ко всем прямым потомкам (кроме img, которому задан flex-shrink: 0) */
+				flex-shrink: 1; 
+				/* min-height: 0; /* Убедимся, что потомки тоже могут сжиматься */
+			}
+			
+			/* Уточнение для изображений на этих слайдах */
+			.reveal .slides section:nth-child(n+4):nth-child(-n+8) img {
+				 max-height: 40vh;  /* Возможно, еще меньше max-height на этих слайдах */
+				 margin: 10px 0; /* Еще меньше отступы */
+			}
+	
+	
+			/* --- Уникальные компоненты --- */
+	
+			/* Карточки для преимуществ (Слайд 5) */
+			.features-grid {
+				display: flex;
+				justify-content: center;
+				gap: 20px; /* Немного уменьшен зазор между карточками */
+				width: 100%; 
+				margin-top: 20px; 
+				margin-bottom: 20px; 
+				box-sizing: border-box;
+				flex-wrap: wrap; 
+				 flex-shrink: 1; /* Сетка карточек может сжиматься */
+				 min-height: 0; /* Сетка карточек может сжиматься по высоте */
+				 overflow-y: auto; /* Добавляем прокрутку, если карточек слишком много */
+				 max-height: calc(100vh - 200px); /* Ограничиваем максимальную высоту сетки (примерное значение, нужно подстроить) */
+			}
+	
+			.feature-card {
+				background: #fff;
+				padding: 20px 15px; /* Еще немного уменьшен padding карточек */
+				border-radius: var(--border-radius-md);
+				box-shadow: var(--card-shadow);
+				text-align: center;
+				flex: 1 1 180px; /* flex-grow, flex-shrink, flex-basis. Немного уменьшен базовый размер */
+				min-width: 150px; /* Немного уменьшена минимальная ширина */
+				transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+				box-sizing: border-box;
+				/* Внутри карточек контент не должен выходить за пределы */
+			}
+			
+			.feature-card:hover {
+				transform: translateY(-5px);
+				box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -4px rgba(0, 0, 0, 0.08);
+			}
+	
+			.feature-card p {
+				font-size: 0.85em; /* Немного уменьшен размер шрифта в карточках */
+				font-weight: 500;
+				color: var(--color-text-dark);
+				margin: 0;
+			}
+	
+			/* Компонент для статистики (Слайд 6) */
+			.stat-item {
+				text-align: center;
+				margin: 20px 0; /* Еще уменьшены отступы */
+				box-sizing: border-box;
+				flex-shrink: 1; /* Блок статистики может сжиматься */
+				min-height: 0; 
+			}
+			.stat-number {
+				font-size: 1.5em; /* Еще уменьшен размер числа */
+				font-weight: 800;
+				line-height: 1.1;
+				color: var(--color-primary);
+			}
+			.stat-label {
+				font-size: 1em; /* Еще уменьшен размер текста */
+				color: var(--color-text-light);
+			}
+			
+			/* Стили для слайда "Наш запрос" (Слайд 8) */
+			.reveal .slides section:nth-child(8) {
+				justify-content: center; /* На этом слайде можно вернуть центрирование */
+			}
+			
+			.reveal .slides section:nth-child(8) p {
+				 margin-top: 15px; /* Уменьшен верхний отступ параграфа */
+				 margin-bottom: 15px; /* Уменьшен нижний отступ параграфа */
+				 font-size: 1em; /* Возможно, уменьшить размер шрифта */
+			}
+	
+			/* Кнопка призыва к действию (Слайд 9) */
+			.cta-link {
+				display: inline-block;
+				margin-top: 30px; /* Немного уменьшен отступ */
+				padding: 15px 30px; /* Немного уменьшен padding */
+				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+				color: white !important;
+				font-size: 1.1em; /* Немного уменьшен размер шрифта кнопки */
+				font-weight: 700;
+				border-radius: 50px;
+				text-decoration: none;
+				box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+				transition: transform 0.2s ease, box-shadow 0.2s ease;
+				box-sizing: border-box;
+				flex-shrink: 0; /* Кнопка не должна сжиматься */
+			}
+	
+			.cta-link:hover {
+				transform: translateY(-3px);
+				box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
+			}
+			
+			/* Слайд с фоновым градиентом для акцента */
+			.gradient-background {
+				background: linear-gradient(45deg, #f3e7e9 0%, #e3eeff 100%);
+			}
+			
+			/* Дополнительные стили для обеспечения центрирования и отсутствия прокрутки */
+			html, body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden; 
+			}
+	
+			.reveal .slides {
+				width: 100% !important; 
+				height: 100% !important; 
+				display: flex; 
+				align-items: center;
+				justify-content: center;
+			}
+	
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				
+                <!-- Слайд 1: Титульный -->
+                <section>
+                    <img id="main-logo" src="placeholder_logo.png" alt="MiMiMi Logo">
+                    <h2>маркетплейс подарков и изделий ручной работы</h2>
+                </section>
+
+                <!-- Слайд 2: Проблема покупателей -->
+                <section class="gradient-background">
+                    <h3 class="gradient-text">Муки выбора идеального подарка...</h3>
+                    <img src="1.jpg" alt="Problem Buyer" class="card-image">
+                </section>
+                
+                <!-- Слайд 3: Проблема мастеров -->
+                <section class="gradient-background">
+                    <h3 class="gradient-text">...и боль талантливых мастеров</h3>
+                    <img src="2.jpg" alt="Problem Maker" class="card-image">
+                </section>
+
+                <!-- Слайд 4: Решение - MiMiMi -->
+                <section>
+                    <h2 class="gradient-text">Решение: MiMiMi.by</h2>
+                    <p>Место, где встречаются таланты и ценители</p>
+                    <img src="3.jpg" alt="Solution Mockup" class="card-image">
+                </section>
+                
+                <!-- Слайд 5: Почему мы? УТП -->
+                <section>
+						<h3>Что нас отличает?</h3>
+						<div class="features-grid" style="font-size: 0.5em;">
+							<div class="feature-card">
+								<p>Отбираем лучшее для клиетов</p>
+							</div>
+							<div class="feature-card">
+								<p>Специализированный "нишевый" маркетплейс подарков</p>
+							</div>
+							<div class="feature-card">
+								<p>Делаем продажи для мастеров</p>
+							</div>
+						</div>
+                        <img src="4.jpg" alt="Our advantages" class="card-image">
+				</section>
+                
+                <!-- Слайд 6: Команда и Трекшен -->
+                <section>
+                    <h3>Фундамент для успеха</h3>
+					<div class="stat-item" style="margin: 40px 0;">
+						<div class="stat-number">15 лет</div>
+						<p class="stat-label">опыта основателя в нише</p>
+					</div>
+                    <img src="5.jpg" alt="Team and Traction" class="card-image">
+                </section>
+                
+                <!-- Слайд 7: Рынок и Бизнес-модель -->
+                <section>
+                    <h3 class="gradient-text">Рынок и монетизация</h3>
+                    <img src="6.jpg" alt="Market and Model" class="card-image">
+                </section>
+
+                <!-- Слайд 8: Запрос -->
+                <section>
+                    <h2 class="gradient-text">Наш запрос</h2>
+                     <img src="7.jpg" alt="The Ask" class="card-image">
+                    <p style="font-size: 1.1em; margin-top: 20px;">Ищем <strong>поддержку и инвестиции</strong> для запуска, маркетинга и масштабирования</p>
+                </section>
+                
+                <!-- Слайд 9: Контакты -->
+                <section>
+                    <img src="8.jpg" alt="MiMiMi Logo" style="max-height: 300px; border-radius: 50%;">
+                    <h2>Давайте создавать эмоции вместе!</h2>
+                    <p class="cta-link">
+                        mimimi.by
+					</p>
+                </section>
+
+			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				center: true,
+				width: 1280,
+				height: 720,
+			});
+		</script>
+	</body>
+</html>
