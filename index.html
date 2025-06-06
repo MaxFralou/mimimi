@@ -12,286 +12,429 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-		<style>
-			/* --- :root - Глобальные переменные --- */
-			:root {
-				--font-family-sans: 'Inter', sans-serif;
-				--color-primary: #f16363;
-				--color-secondary: #ff5353;
-				--color-text-dark: #1F2937;
-				--color-text-light: #4B5563;
-				--card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-				--border-radius-lg: 24px;
-				--border-radius-md: 16px;
-				--slide-padding: clamp(15px, 3vw, 40px); /* Адаптивный отступ */
-			}
-		
-			/* --- Глобальные стили Reveal.js --- */
-			.reveal {
-				font-family: var(--font-family-sans);
-				color: var(--color-text-dark);
-				height: 100vh; /* Явно задаем высоту 100vh */
-			}
-			html, body {
-				margin: 0;
-				padding: 0;
-				overflow: hidden; /* Предотвращаем любую прокрутку на уровне документа */
-				height: 100%; /* Гарантируем, что body занимает всю высоту */
-			}
-		
-			/* --- Типографика --- */
-			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-				text-transform: none;
-				font-weight: 800;
-				color: var(--color-text-dark);
-				margin: 0 0 0.5em 0;
-				line-height: 1.2;
-				text-align: center;
-				flex-shrink: 0; /* Заголовки не должны сжиматься */
-				font-size: clamp(1.5rem, 4vw, 2.5rem); /* Адаптивный размер шрифта */
-			}
-			.reveal p {
-				color: var(--color-text-light);
-				font-weight: 400;
-				line-height: 1.5;
-				margin: 0 0 1em 0;
-				font-size: clamp(0.9rem, 2vw, 1.1rem); /* Адаптивный размер шрифта */
-			}
-			.reveal strong {
-				font-weight: 700;
-				color: var(--color-primary);
-			}
-			.gradient-text {
-				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
-				text-fill-color: transparent;
-			}
-		
-			/* --- Базовый макет слайда --- */
-			.reveal .slides section {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				text-align: center;
-				padding: var(--slide-padding);
-				height: 100vh; /* Явно задаем высоту 100vh */
-				box-sizing: border-box;
-				overflow: hidden; /* Предотвращаем выход контента за границы слайда */
-				max-height: 100vh; /* Максимальная высота слайда */
-			}
-		
-			/* --- Стили для изображений (сделаны большими) --- */
-			.reveal section img {
-				display: block;
-				max-width: 100%;
-				/* Ограничиваем высоту изображений, чтобы они помещались на слайд */
-				max-height: 55vh; /* Уменьшаем с 70vh до 55vh для гарантии помещения */
-				height: auto;
-				object-fit: contain;
-				border: none;
-				background: none;
-				box-shadow: none;
-				margin: 0.5em auto; /* Уменьшаем отступы */
-				/* Позволяем изображению сжиматься, если не хватает места */
-				flex-shrink: 1;
-				min-height: 0; /* Техническое свойство для корректной работы flex-shrink */
-			}
-			.reveal .card-image {
-				object-fit: cover;
-				border-radius: var(--border-radius-lg);
-				box-shadow: var(--card-shadow);
-			}
-			#main-logo {
-				max-height: min(150px, 20vh); /* Адаптивная высота логотипа */
-				margin-bottom: clamp(15px, 3vh, 30px);
-				flex-shrink: 0;
-			}
-		
-			/* ========================================= */
-			/* --- КОМПОНЕНТЫ И УНИКАЛЬНЫЕ СТИЛИ --- */
-			/* ========================================= */
-		
-			/* --- Макет "Split Layout" (Слайды 5, 6) --- */
-			.split-layout {
-				display: flex;
-				/* Растягиваем колонки на всю высоту родителя (split-layout) */
-				align-items: stretch;
-				justify-content: center;
-				gap: clamp(20px, 4vw, 40px); /* Адаптивный отступ */
-				width: 100%;
-				margin-top: 0.5em; /* Уменьшаем отступ сверху */
-				/* Заставляем весь блок расти и занимать свободное место на слайде */
-				flex-grow: 1;
-				min-height: 0; /* Для корректной работы flex-grow */
-				max-height: calc(100vh - 150px); /* Ограничиваем максимальную высоту */
-				overflow: hidden; /* Предотвращаем выход за границы */
-			}
-			.split-layout__left,
-			.split-layout__right {
-				flex: 1;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				min-width: 0; /* Для корректной работы flex */
-				overflow: hidden; /* Предотвращаем выход за границы */
-			}
-			.split-layout img {
-				margin: 0;
-				width: 100%;
-				/* Заставляем картинку занять всю высоту своей колонки */
-				height: 100%;
-				object-fit: contain; /* Важно, чтобы картинка не искажалась */
-				max-height: 50vh; /* Ограничиваем высоту для гарантии помещения */
-			}
-		
-		
-			/* --- Карточки преимуществ (Слайд 5) --- */
-			.features-grid {
-				display: flex;
-				flex-direction: column; /* Карточки теперь в колонку */
-				gap: clamp(10px, 1.5vh, 15px); /* Адаптивный отступ */
-				width: 100%;
-				height: 100%; /* Занимают всю высоту колонки */
-				justify-content: center; /* Центрируем карточки внутри колонки */
-				align-items: stretch; /* Растягиваем по ширине контейнера */
-			}
-			.feature-card {
-				background: #fff;
-				padding: clamp(10px, 2vh, 20px); /* Адаптивный отступ */
-				border-radius: var(--border-radius-md);
-				box-shadow: var(--card-shadow);
-				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex-grow: 1; /* Позволяет карточкам расти и заполнять пространство */
-			}
-			.feature-card:hover {
-				transform: translateY(-5px);
-				box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
-			}
-			.feature-card p {
-				font-size: clamp(0.8em, 1.5vw, 0.9em); /* Адаптивный размер шрифта */
-				font-weight: 500;
-				color: var(--color-text-dark);
-				margin: 0;
-			}
-		
-			/* --- Компонент для статистики (Слайд 6) --- */
-			.stat-item {
-				text-align: center;
-			}
-			.stat-number {
-				font-size: clamp(2em, 5vw, 2.5em); /* Адаптивный размер шрифта */
-				font-weight: 800;
-				line-height: 1.1;
-				color: var(--color-primary);
-				display: block;
-			}
-			.stat-label {
-				font-size: clamp(0.8em, 1.5vw, 1em); /* Адаптивный размер шрифта */
-				color: var(--color-text-light);
-				margin: 0;
-			}
-		
-			/* --- Стили для последнего слайда (Слайд 9) --- */
-			.contact-logo {
-				max-height: min(150px, 20vh); /* Адаптивная высота логотипа */
-				border-radius: 50%; /* Делаем логотип круглым */
-				margin-bottom: clamp(10px, 2vh, 1em);
-				flex-shrink: 0;
-			}
-			.cta-link {
-				display: inline-block;
-				margin-top: clamp(15px, 2vh, 1.5em);
-				padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 40px);
-				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-				color: white !important;
-				font-size: clamp(0.9em, 2vw, 1.1em); /* Адаптивный размер шрифта */
-				font-weight: 700;
-				border-radius: 50px;
-				text-decoration: none;
-				box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
-				transition: transform 0.2s ease, box-shadow 0.2s ease;
-				flex-shrink: 0;
-			}
-			.cta-link:hover {
-				transform: translateY(-3px);
-				box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
-			}
-		
-			/* ========================================= */
-			/* --- АДАПТИВНЫЕ СТИЛИ (Медиа-запросы) --- */
-			/* ========================================= */
-			@media (max-width: 768px) {
-				/* Макет Split Layout: колонки становятся друг под другом */
-				.split-layout {
-					flex-direction: column;
-					gap: 15px;
-					max-height: none; /* Отменяем ограничение высоты */
-				}
-				.split-layout__left,
-				.split-layout__right {
-					width: 100%;
-					max-height: 45vh; /* Ограничиваем высоту каждой колонки */
-				}
-				.split-layout img {
-					max-height: 35vh; /* Ограничиваем высоту изображений */
-				}
-			
-				/* Карточки преимуществ тоже адаптируются */
-				.features-grid {
-				   gap: 8px;
-				   max-height: 40vh; /* Ограничиваем высоту сетки */
-				}
-				.feature-card {
-					padding: 10px;
-				}
-			}
-		
-			@media (max-width: 480px) {
-				.reveal .slides section {
-					padding: 15px;
-				}
-				#main-logo, .contact-logo {
-					max-height: 100px;
-				}
-				.cta-link {
-					padding: 10px 25px;
-				}
-				.split-layout {
-					gap: 10px;
-				}
-				.split-layout__left,
-				.split-layout__right {
-					max-height: 40vh;
-				}
-				.split-layout img {
-					max-height: 30vh;
-				}
-			}
-		
-			/* Дополнительные стили для очень маленьких экранов */
-			@media (max-height: 600px) {
-				.reveal section img {
-					max-height: 45vh;
-				}
-				#main-logo, .contact-logo {
-					max-height: 80px;
-					margin-bottom: 10px;
-				}
-				.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
-					margin-bottom: 0.3em;
-				}
-				.reveal p {
-					margin-bottom: 0.5em;
-				}
-			}
-		</style>
+<style>
+	/* Глобальные стили для всех слайдов */
+.reveal {
+    font-family: 'Inter', sans-serif;
+    font-size: 32px; /* Базовый размер шрифта для адаптивности */
+    color: #333;
+    background: none;
+    background-color: #fff; /* Дефолтный белый фон */
+}
+
+/* Стили для контейнера слайдов, центрирование и полный размер */
+.reveal .slides {
+    text-align: center; /* Центрируем содержимое слайдов */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Убираем любые возможные отступы, которые могут влиять на центрирование */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Важно для всех блоков */
+}
+
+/* Стили для каждой секции (слайда) */
+.reveal section {
+    /* Для веб-отображения: */
+    padding: 20px; /* Добавляем небольшой внутренний отступ для контента */
+    width: 90%; /* Ширина контента слайда */
+    max-width: 1000px; /* Максимальная ширина для больших экранов */
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
+    display: flex; /* Используем flexbox для внутреннего расположения */
+    flex-direction: column; /* Элементы идут сверху вниз */
+    justify-content: center; /* Центрируем по вертикали */
+    align-items: center; /* Центрируем по горизонтали */
+    text-align: center; /* Текст внутри слайда по центру */
+    min-height: 100%; /* Убедимся, что секция занимает всю высоту */
+    margin: 0; /* Сброс margin */
+}
+
+/* Общие стили для заголовков */
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+    margin-bottom: 0.5em;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #333;
+    word-wrap: break-word; /* Перенос слов для длинных заголовков */
+    max-width: 95%; /* Ограничение ширины заголовков для избежания переполнения */
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+.reveal h1 { font-size: 2.5em; }
+.reveal h2 { font-size: 2em; }
+.reveal h3 { font-size: 1.5em; }
+
+/* Градиентный текст */
+.gradient-text {
+    background: black;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+/* Общие стили для изображений-карточек */
+.card-image {
+    max-width: 80% !important; /* Изображение не должно быть слишком большим */
+    max-height: 60vh !important; /* Максимальная высота от viewport height */
+    object-fit: contain; /* Сохраняем пропорции, вписываем в контейнер */
+    border-radius: 15px; /* Скругленные углы */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Мягкая тень */
+    margin-top: 1em; /* Отступ сверху */
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+/* ------------------------------------------- */
+/* Стили для конкретных слайдов */
+/* ------------------------------------------- */
+
+/* Слайд 1: Титульный */
+.slide-title #main-logo {
+    max-width: 300px; /* Размер логотипа */
+    height: auto;
+    margin-bottom: 1em;
+}
+
+.slide-title h2 {
+    font-size: 1.8em;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+
+
+.slide-solution p {
+    font-size: 1.2em;
+    color: #666;
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+/* Слайд 5: Почему мы? (Features) */
+.slide-features h3 {
+    margin-bottom: 1em;
+}
+
+.split-layout {
+    display: flex;
+    flex-direction: row; /* По умолчанию в ряд */
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 1em;
+    gap: 20px; /* Отступ между колонками */
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+.split-layout__left,
+.split-layout__right {
+    flex: 1; /* Распределяем пространство поровну */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.split-layout__right .card-image {
+    max-width: 100%; /* Изображение внутри правой колонки */
+    height: auto;
+    margin-top: 0; /* Убираем лишний margin-top */
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Одна колонка по умолчанию */
+    gap: 15px; /* Отступ между карточками */
+    width: 100%;
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+.feature-card {
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    text-align: center;
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+.feature-card p {
+    font-size: 1.1em;
+    color: #444;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Слайд 6: Команда и Трекшен */
+.slide-traction h3 {
+    margin-bottom: 1em;
+}
+
+.stat-item {
+    color: #000;
+    border-radius: 15px;
+    text-align: center;
+    width: 100%;
+    max-width: 400px; /* Ограничиваем ширину для стат.блока */
+    margin: auto; /* Центрируем */
+}
+
+.stat-number {
+    font-size: 3em;
+    font-weight: 800;
+    margin-bottom: 0.1em;
+}
+
+.stat-label {
+    font-size: 1.3em;
+    font-weight: 500;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Слайд 7: Рынок и Бизнес-модель */
+.slide-market h3 {
+    margin-bottom: 1em;
+}
+
+
+
+.slide-ask p {
+    font-size: 1.3em;
+    color: #444;
+    font-weight: 500;
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+.slide-ask strong {
+    font-weight: 700;
+    color: #fc5c7d;
+}
+
+/* Слайд 9: Контакты */
+.slide-contacts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide-contacts .contact-logo {
+	    border-radius: 12px;
+    max-width: 250px;
+    height: auto;
+    margin-bottom: 1.5em;
+}
+
+.slide-contacts h2 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 1.5em;
+}
+
+.cta-link {
+    display: inline-block;
+    background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+    color: #fff !important;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 1.5em;
+    font-weight: 700;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    margin-left: auto; /* Автоматические поля для центрирования */
+    margin-right: auto;
+}
+
+/* ------------------------------------------- */
+/* Адаптивность (Media Queries) для экрана */
+/* ------------------------------------------- */
+
+@media (max-width: 768px) {
+    .reveal { font-size: 24px; }
+    .reveal section { padding: 15px; }
+    .reveal h1 { font-size: 1.8em; }
+    .reveal h2 { font-size: 1.5em; }
+    .reveal h3 { font-size: 1.2em; }
+    .card-image { max-width: 90%; max-height: 50vh; }
+    .split-layout { flex-direction: column; gap: 30px; }
+    .split-layout__left, .split-layout__right { width: 100%; }
+    .split-layout__right .card-image { max-width: 80%; }
+    .features-grid { grid-template-columns: 1fr; }
+    .feature-card { padding: 15px; }
+    .stat-number { font-size: 2.5em; }
+    .stat-label { font-size: 1.1em; }
+    .slide-ask p { font-size: 1.1em; }
+    .slide-contacts .contact-logo { max-width: 200px; }
+    .slide-contacts h2 { font-size: 1.5em; }
+    .cta-link { font-size: 1.2em; padding: 12px 25px; }
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+    .reveal { font-size: 28px; }
+    .reveal h1 { font-size: 2.2em; }
+    .reveal h2 { font-size: 1.8em; }
+    .reveal h3 { font-size: 1.4em; }
+    .card-image { max-width: 70%; max-height: 55vh; }
+    .split-layout { gap: 30px; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .stat-number { font-size: 2.8em; }
+    .stat-label { font-size: 1.2em; }
+    .slide-ask p { font-size: 1.2em; }
+    .slide-contacts .contact-logo { max-width: 220px; }
+    .slide-contacts h2 { font-size: 1.8em; }
+    .cta-link { font-size: 1.3em; }
+}
+
+
+/* =========================================== */
+/* Стили специально для печати (при ?print-pdf) */
+/* =========================================== */
+@media print {
+    /* Переопределяем базовые стили Reveal.js для печати */
+    .reveal {
+        background: none !important;
+        background-color: #fff !important;
+        overflow: hidden !important; /* Убираем полосы прокрутки */
+        width: 100vw !important; /* Убедимся, что корневой контейнер занимает всю ширину */
+        height: 100vh !important; /* Убедимся, что корневой контейнер занимает всю высоту */
+        margin: 0 !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .reveal .slides {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: block !important; /* Отключаем flexbox для контейнера слайдов */
+        box-sizing: border-box !important;
+    }
+
+    .reveal section {
+        /* Каждый слайд должен занять всю страницу */
+        width: 100% !important;
+        height: 100vh !important; /* Устанавливаем высоту в 100% от viewport height */
+        margin: 0 !important;
+        padding: 5vh 5vw !important; /* Отступы от краев страницы в процентах от viewport */
+        box-sizing: border-box !important; /* Важно для включения padding в ширину/высоту */
+
+        /* Flexbox для центрирования содержимого внутри каждого слайда */
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important; /* Центрируем по вертикали */
+        align-items: center !important; /* Центрируем по горизонтали */
+        text-align: center !important; /* Текст по центру */
+
+        /* Сброс всех возможных смещений */
+        position: relative !important; /* Или static, но relative дает больше контроля */
+        left: 0 !important;
+        right: 0 !important;
+        transform: none !important; /* Убираем любые трансформации */
+        top: 0 !important; /* Сброс top */
+        margin: 0 !important; /* Убедимся, что нет внешних отступов */
+
+        /* Отключаем все переходы, тени, границы, которые не нужны в PDF */
+        transition: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        background: none !important; /* Убедимся, что фон секции прозрачный */
+        background-color: transparent !important;
+    }
+
+    /* Элементы внутри слайдов - усиление центрирования */
+    .reveal h1, .reveal h2, .reveal h3,
+    .reveal p, .reveal img, .reveal a, .reveal div {
+        margin-left: auto !important; /* Автоматические поля слева и справа */
+        margin-right: auto !important; /* для центрирования блочных элементов */
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+        max-width: 85% !important; /* Уменьшим ширину заголовков */
+    }
+
+    .card-image {
+        max-width: 80% !important;
+        max-height: 50vh !important; /* Уменьшаем максимальную высоту, чтобы уместить все */
+        object-fit: contain !important;
+        box-shadow: none !important;
+        margin-top: 0.8em !important; /* Меньший отступ сверху */
+    }
+
+    /* Стили для split-layout в режиме печати */
+    .split-layout {
+        flex-direction: row !important; /* Попробуем оставить в ряд */
+        flex-wrap: wrap !important; /* Разрешаем перенос, если не помещается */
+        justify-content: center !important; /* Центрируем элементы */
+        align-items: center !important; /* Выравнивание элементов по центру */
+        width: 100% !important;
+        gap: 15px !important; /* Меньший отступ между колонками */
+    }
+
+    .split-layout__left,
+    .split-layout__right {
+        flex: 1 1 45% !important; /* Каждая колонка ~45%, чтобы оставить место для gap и padding */
+        max-width: 45% !important; /* Ограничиваем максимальную ширину */
+        margin: 0 !important;
+        padding: 0 !important; /* Убираем padding, если он есть */
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr !important; /* На печати часто лучше одна колонка, чтобы не было переполнения */
+        gap: 10px !important;
+        max-width: 90% !important; /* Ограничим ширину сетки */
+    }
+
+    .feature-card {
+        padding: 15px !important;
+        box-shadow: none !important; /* Убираем тени */
+    }
+
+    .stat-item {
+        padding: 20px !important; /* Меньший padding */
+        box-shadow: none !important; /* Убираем тени */
+        max-width: 350px !important; /* Немного уменьшим ширину */
+    }
+
+    .stat-number {
+        font-size: 2.3em !important; /* Меньший размер */
+    }
+
+    .stat-label {
+        font-size: 1em !important; /* Меньший размер */
+    }
+
+    .cta-link {
+        box-shadow: none !important; /* Убираем тени */
+    }
+
+    /* Градиентный текст: Если при печати плохо видно, можно сделать сплошным */
+    /*
+    .gradient-text {
+        -webkit-text-fill-color: #6a82fb !important;
+        background: none !important;
+    }
+    */
+
+    /* Определение размера страницы и полей */
+    @page {
+        size: A4 landscape; /* Или portrait, если предпочитаете вертикальный формат */
+        margin: 0; /* Убираем стандартные поля браузера */
+    }
+}
+</style>
 	</head>
 	<body>
 		<div class="reveal">
@@ -364,8 +507,9 @@
 				<!-- Слайд 8: Запрос -->
 				<section class="slide-ask">
 					<h2 class="gradient-text">Наш запрос</h2>
-					<img src="7.jpg" alt="The Ask" class="card-image">
 					<p>Ищем <strong>поддержку и инвестиции</strong> для запуска, маркетинга и масштабирования</p>
+					<img src="7.jpg" alt="The Ask" class="card-image">
+					
 				</section>
 
 				<!-- Слайд 9: Контакты (Улучшенная семантика и стили) -->
@@ -389,38 +533,40 @@
 				center: true,
 				width: '100%',
 				height: '100%',
-				autoSlide: 0, 
-            autoPlayMedia: null, 
-            controls: true, 
-            progress: true, 
-            history: true, 
-            keyboard: true, 
-            overview: true, 
-            touch: true, 
-            loop: false, 
-            rtl: false, 
-            fragments: true, 
-            fragmentInURL: false, 
-            embedded: false, 
-            showNotes: false, 
-            autoSlideStoppable: true, 
-            mouseWheel: false, 
-            hideAddressBar: true, 
-            previewLinks: false, 
-            transition: 'slide', 
-            transitionSpeed: 'default', 
-            backgroundTransition: 'fade', 
-            viewDistance: 3, 
-            parallaxBackgroundImage: '', 
-            parallaxBackgroundSize: '', 
-            parallaxBackgroundHorizontal: null, 
-            parallaxBackgroundVertical: null, 
-            display: 'block', 
+				autoSlide: 0,
+            autoPlayMedia: null,
+            controls: true,
+            progress: true,
+            history: true,
+            keyboard: true,
+            overview: true,
+            touch: true,
+            loop: false,
+            rtl: false,
+            fragments: true,
+            fragmentInURL: false,
+            embedded: false,
+            showNotes: false,
+            autoSlideStoppable: true,
+            mouseWheel: false,
+            hideAddressBar: true,
+            previewLinks: false,
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            viewDistance: 3,
+            parallaxBackgroundImage: '',
+            parallaxBackgroundSize: '',
+            parallaxBackgroundHorizontal: null,
+            parallaxBackgroundVertical: null,
+            display: 'block',
             margin: 0, /* Убираем отступы между слайдами */
             minScale: 0.2, /* Минимальный масштаб для адаптивности */
             maxScale: 1.5, /* Максимальный масштаб */
             autoAdjustHeight: true
+			
 			});
+
 		</script>
 	</body>
 </html>
