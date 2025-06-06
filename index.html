@@ -1,5 +1,19 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<title>MiMiMi</title>
+		<!-- Ссылки на CSS оставляем без изменений -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reset.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/theme/white.css" id="theme">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
 		<style>
-			/* --- :root - Global Variables --- */
+			/* --- :root - Глобальные переменные --- */
 			:root {
 				--font-family-sans: 'Inter', sans-serif;
 				--color-primary: #f16363;
@@ -9,50 +23,23 @@
 				--card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.07), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 				--border-radius-lg: 24px;
 				--border-radius-md: 16px;
+				--slide-padding: clamp(15px, 3vw, 40px); /* Адаптивный отступ */
 			}
-
-			/* --- Global Reveal.js Styles --- */
-			html, body {
-				margin: 0;
-				padding: 0;
-				height: 100vh;
-				overflow: hidden;
-			}
-
+		
+			/* --- Глобальные стили Reveal.js --- */
 			.reveal {
 				font-family: var(--font-family-sans);
 				color: var(--color-text-dark);
-				height: 100vh !important;
-				width: 100% !important;
-				position: fixed;
-				top: 0;
-				left: 0;
-				overflow: hidden;
+				height: 100vh; /* Явно задаем высоту 100vh */
 			}
-
-			.reveal .slides {
-				height: 100vh !important;
-				width: 100% !important;
-				display: flex;
-				align-items: center;
-				justify-content: center;
+			html, body {
+				margin: 0;
+				padding: 0;
+				overflow: hidden; /* Предотвращаем любую прокрутку на уровне документа */
+				height: 100%; /* Гарантируем, что body занимает всю высоту */
 			}
-
-			/* --- Slide Layout --- */
-			.reveal .slides section {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				align-items: center;
-				text-align: center;
-				padding: 20px 40px;
-				height: 100vh;
-				width: 100%;
-				box-sizing: border-box;
-				overflow: hidden;
-			}
-
-			/* --- Typography --- */
+		
+			/* --- Типографика --- */
 			.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
 				text-transform: none;
 				font-weight: 800;
@@ -60,23 +47,20 @@
 				margin: 0 0 0.5em 0;
 				line-height: 1.2;
 				text-align: center;
-				flex-shrink: 0;
-				max-width: 90%;
+				flex-shrink: 0; /* Заголовки не должны сжиматься */
+				font-size: clamp(1.5rem, 4vw, 2.5rem); /* Адаптивный размер шрифта */
 			}
-
 			.reveal p {
 				color: var(--color-text-light);
 				font-weight: 400;
 				line-height: 1.5;
 				margin: 0 0 1em 0;
-				max-width: 90%;
+				font-size: clamp(0.9rem, 2vw, 1.1rem); /* Адаптивный размер шрифта */
 			}
-
 			.reveal strong {
 				font-weight: 700;
 				color: var(--color-primary);
 			}
-
 			.gradient-text {
 				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
 				-webkit-background-clip: text;
@@ -84,49 +68,67 @@
 				background-clip: text;
 				text-fill-color: transparent;
 			}
-
-			/* --- Images --- */
+		
+			/* --- Базовый макет слайда --- */
+			.reveal .slides section {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				padding: var(--slide-padding);
+				height: 100vh; /* Явно задаем высоту 100vh */
+				box-sizing: border-box;
+				overflow: hidden; /* Предотвращаем выход контента за границы слайда */
+				max-height: 100vh; /* Максимальная высота слайда */
+			}
+		
+			/* --- Стили для изображений (сделаны большими) --- */
 			.reveal section img {
 				display: block;
-				max-width: 90%;
-				max-height: 60vh;
+				max-width: 100%;
+				/* Ограничиваем высоту изображений, чтобы они помещались на слайд */
+				max-height: 55vh; /* Уменьшаем с 70vh до 55vh для гарантии помещения */
 				height: auto;
-				width: auto;
 				object-fit: contain;
 				border: none;
 				background: none;
 				box-shadow: none;
-				margin: 1em auto;
+				margin: 0.5em auto; /* Уменьшаем отступы */
+				/* Позволяем изображению сжиматься, если не хватает места */
 				flex-shrink: 1;
-				min-height: 0;
+				min-height: 0; /* Техническое свойство для корректной работы flex-shrink */
 			}
-
 			.reveal .card-image {
 				object-fit: cover;
 				border-radius: var(--border-radius-lg);
 				box-shadow: var(--card-shadow);
 			}
-
 			#main-logo {
-				max-height: 200px;
-				margin-bottom: 30px;
+				max-height: min(150px, 20vh); /* Адаптивная высота логотипа */
+				margin-bottom: clamp(15px, 3vh, 30px);
 				flex-shrink: 0;
 			}
-
-			/* --- Split Layout (Slides 5, 6) --- */
+		
+			/* ========================================= */
+			/* --- КОМПОНЕНТЫ И УНИКАЛЬНЫЕ СТИЛИ --- */
+			/* ========================================= */
+		
+			/* --- Макет "Split Layout" (Слайды 5, 6) --- */
 			.split-layout {
 				display: flex;
+				/* Растягиваем колонки на всю высоту родителя (split-layout) */
 				align-items: stretch;
 				justify-content: center;
-				gap: 40px;
-				width: 90%;
-				max-height: 70vh;
-				margin: 1em auto;
+				gap: clamp(20px, 4vw, 40px); /* Адаптивный отступ */
+				width: 100%;
+				margin-top: 0.5em; /* Уменьшаем отступ сверху */
+				/* Заставляем весь блок расти и занимать свободное место на слайде */
 				flex-grow: 1;
-				min-height: 0;
-				overflow: hidden;
+				min-height: 0; /* Для корректной работы flex-grow */
+				max-height: calc(100vh - 150px); /* Ограничиваем максимальную высоту */
+				overflow: hidden; /* Предотвращаем выход за границы */
 			}
-
 			.split-layout__left,
 			.split-layout__right {
 				flex: 1;
@@ -134,89 +136,82 @@
 				flex-direction: column;
 				justify-content: center;
 				align-items: center;
-				min-width: 0;
-				height: 100%;
+				min-width: 0; /* Для корректной работы flex */
+				overflow: hidden; /* Предотвращаем выход за границы */
 			}
-
 			.split-layout img {
-				width: 100%;
-				height: 100%;
-				max-height: 70vh;
-				object-fit: contain;
 				margin: 0;
+				width: 100%;
+				/* Заставляем картинку занять всю высоту своей колонки */
+				height: 100%;
+				object-fit: contain; /* Важно, чтобы картинка не искажалась */
+				max-height: 50vh; /* Ограничиваем высоту для гарантии помещения */
 			}
-
-			/* --- Features Grid (Slide 5) --- */
+		
+		
+			/* --- Карточки преимуществ (Слайд 5) --- */
 			.features-grid {
 				display: flex;
-				flex-direction: column;
-				gap: 15px;
+				flex-direction: column; /* Карточки теперь в колонку */
+				gap: clamp(10px, 1.5vh, 15px); /* Адаптивный отступ */
 				width: 100%;
-				height: 100%;
-				justify-content: center;
-				align-items: stretch;
-				overflow-y: auto;
+				height: 100%; /* Занимают всю высоту колонки */
+				justify-content: center; /* Центрируем карточки внутри колонки */
+				align-items: stretch; /* Растягиваем по ширине контейнера */
 			}
-
 			.feature-card {
 				background: #fff;
-				padding: 20px;
+				padding: clamp(10px, 2vh, 20px); /* Адаптивный отступ */
 				border-radius: var(--border-radius-md);
 				box-shadow: var(--card-shadow);
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				flex-grow: 1;
+				flex-grow: 1; /* Позволяет карточкам расти и заполнять пространство */
 			}
-
 			.feature-card:hover {
 				transform: translateY(-5px);
 				box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
 			}
-
 			.feature-card p {
-				font-size: 0.9em;
+				font-size: clamp(0.8em, 1.5vw, 0.9em); /* Адаптивный размер шрифта */
 				font-weight: 500;
 				color: var(--color-text-dark);
 				margin: 0;
 			}
-
-			/* --- Statistics (Slide 6) --- */
+		
+			/* --- Компонент для статистики (Слайд 6) --- */
 			.stat-item {
 				text-align: center;
-				flex-grow: 1;
 			}
-
 			.stat-number {
-				font-size: 2.5em;
+				font-size: clamp(2em, 5vw, 2.5em); /* Адаптивный размер шрифта */
 				font-weight: 800;
 				line-height: 1.1;
 				color: var(--color-primary);
 				display: block;
 			}
-
 			.stat-label {
-				font-size: 1em;
+				font-size: clamp(0.8em, 1.5vw, 1em); /* Адаптивный размер шрифта */
 				color: var(--color-text-light);
 				margin: 0;
 			}
-
-			/* --- Contact Slide (Slide 9) --- */
+		
+			/* --- Стили для последнего слайда (Слайд 9) --- */
 			.contact-logo {
-				max-height: 200px;
-				border-radius: 50%;
-				margin-bottom: 1em;
+				max-height: min(150px, 20vh); /* Адаптивная высота логотипа */
+				border-radius: 50%; /* Делаем логотип круглым */
+				margin-bottom: clamp(10px, 2vh, 1em);
 				flex-shrink: 0;
 			}
-
 			.cta-link {
 				display: inline-block;
-				margin-top: 1.5em;
-				padding: 15px 40px;
+				margin-top: clamp(15px, 2vh, 1.5em);
+				padding: clamp(10px, 2vw, 15px) clamp(20px, 4vw, 40px);
 				background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
 				color: white !important;
-				font-size: 1.1em;
+				font-size: clamp(0.9em, 2vw, 1.1em); /* Адаптивный размер шрифта */
 				font-weight: 700;
 				border-radius: 50px;
 				text-decoration: none;
@@ -224,78 +219,208 @@
 				transition: transform 0.2s ease, box-shadow 0.2s ease;
 				flex-shrink: 0;
 			}
-
 			.cta-link:hover {
 				transform: translateY(-3px);
 				box-shadow: 0 7px 20px rgba(99, 102, 241, 0.4);
 			}
-
-			/* --- Responsive Styles --- */
+		
+			/* ========================================= */
+			/* --- АДАПТИВНЫЕ СТИЛИ (Медиа-запросы) --- */
+			/* ========================================= */
 			@media (max-width: 768px) {
-				.reveal h2, .reveal h3 {
-					font-size: 1.5em;
-				}
-
-				.reveal p {
-					font-size: 0.9em;
-				}
-
+				/* Макет Split Layout: колонки становятся друг под другом */
 				.split-layout {
 					flex-direction: column;
-					gap: 20px;
-					max-height: 80vh;
-					width: 100%;
+					gap: 15px;
+					max-height: none; /* Отменяем ограничение высоты */
 				}
-
 				.split-layout__left,
 				.split-layout__right {
 					width: 100%;
-					height: auto;
+					max-height: 45vh; /* Ограничиваем высоту каждой колонки */
 				}
-
 				.split-layout img {
-					height: auto;
-					max-height: 40vh;
+					max-height: 35vh; /* Ограничиваем высоту изображений */
 				}
-
+			
+				/* Карточки преимуществ тоже адаптируются */
 				.features-grid {
-					gap: 10px;
-					height: auto;
+				   gap: 8px;
+				   max-height: 40vh; /* Ограничиваем высоту сетки */
 				}
-
 				.feature-card {
-					padding: 15px;
-				}
-
-				.feature-card p {
-					font-size: 0.8em;
-				}
-
-				.stat-number {
-					font-size: 2em;
+					padding: 10px;
 				}
 			}
-
+		
 			@media (max-width: 480px) {
 				.reveal .slides section {
-					padding: 15px 20px;
+					padding: 15px;
 				}
-
-				.reveal h2, .reveal h3 {
-					font-size: 1.3em;
+				#main-logo, .contact-logo {
+					max-height: 100px;
 				}
-
-				#main-logo {
-					max-height: 150px;
-				}
-
 				.cta-link {
-					padding: 12px 30px;
-					font-size: 1em;
+					padding: 10px 25px;
 				}
-
+				.split-layout {
+					gap: 10px;
+				}
+				.split-layout__left,
+				.split-layout__right {
+					max-height: 40vh;
+				}
+				.split-layout img {
+					max-height: 30vh;
+				}
+			}
+		
+			/* Дополнительные стили для очень маленьких экранов */
+			@media (max-height: 600px) {
 				.reveal section img {
-					max-height: 50vh;
+					max-height: 45vh;
+				}
+				#main-logo, .contact-logo {
+					max-height: 80px;
+					margin-bottom: 10px;
+				}
+				.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+					margin-bottom: 0.3em;
+				}
+				.reveal p {
+					margin-bottom: 0.5em;
 				}
 			}
 		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+				<!-- Слайд 1: Титульный -->
+				<section class="slide-title">
+					<img id="main-logo" src="placeholder_logo.png" alt="MiMiMi Logo">
+					<h2>маркетплейс подарков и изделий ручной работы</h2>
+				</section>
+
+				<!-- Слайд 2: Проблема покупателей -->
+				<section class="slide-problem">
+					<h3 class="gradient-text">Муки выбора идеального подарка...</h3>
+					<img src="1.jpg" alt="Problem Buyer" class="card-image">
+				</section>
+
+				<!-- Слайд 3: Проблема мастеров -->
+				<section class="slide-problem">
+					<h3 class="gradient-text">...и боль талантливых мастеров</h3>
+					<img src="2.jpg" alt="Problem Maker" class="card-image">
+				</section>
+
+				<!-- Слайд 4: Решение - MiMiMi -->
+				<section class="slide-solution">
+					<h2 class="gradient-text">Решение: MiMiMi.by</h2>
+					<p>Место, где встречаются таланты и ценители</p>
+					<img src="3.jpg" alt="Solution Mockup" class="card-image">
+				</section>
+
+				<!-- Слайд 5: Почему мы? УТП (Используем новый макет split-layout) -->
+				<section class="slide-features">
+					<h3>Что нас отличает?</h3>
+					<div class="split-layout">
+						<div class="split-layout__left">
+							<div class="features-grid">
+								<div class="feature-card"><p>Отбираем лучшее для клиентов</p></div>
+								<div class="feature-card"><p>Специализированный "нишевый" маркетплейс подарков</p></div>
+								<div class="feature-card"><p>Делаем продажи для мастеров</p></div>
+							</div>
+						</div>
+						<div class="split-layout__right">
+							<img src="4.jpg" alt="Our advantages" class="card-image">
+						</div>
+					</div>
+				</section>
+
+				<!-- Слайд 6: Команда и Трекшен (Используем новый макет split-layout) -->
+				<section class="slide-traction">
+					 <h3>Фундамент для успеха</h3>
+					<div class="split-layout">
+						<div class="split-layout__left">
+							<div class="stat-item">
+								<div class="stat-number">15 лет</div>
+								<p class="stat-label">опыта основателя в нише</p>
+							</div>
+						</div>
+						<div class="split-layout__right">
+							<img src="5.jpg" alt="Team and Traction" class="card-image">
+						</div>
+					</div>
+				</section>
+
+				<!-- Слайд 7: Рынок и Бизнес-модель -->
+				<section class="slide-market">
+					<h3 class="gradient-text">Рынок и монетизация</h3>
+					<img src="6.jpg" alt="Market and Model" class="card-image">
+				</section>
+
+				<!-- Слайд 8: Запрос -->
+				<section class="slide-ask">
+					<h2 class="gradient-text">Наш запрос</h2>
+					<img src="7.jpg" alt="The Ask" class="card-image">
+					<p>Ищем <strong>поддержку и инвестиции</strong> для запуска, маркетинга и масштабирования</p>
+				</section>
+
+				<!-- Слайд 9: Контакты (Улучшенная семантика и стили) -->
+				<section class="slide-contacts">
+					<img src="8.jpg" alt="MiMiMi Logo" class="contact-logo">
+					<h2>Давайте создавать эмоции вместе!</h2>
+					<!-- Используем тег <a> для ссылки, а не <p> -->
+					<a href="https://mimimi.by" target="_blank" class="cta-link">
+						mimimi.by
+					</a>
+				</section>
+
+			</div>
+		</div>
+
+		<!-- JS-код оставляем без изменений -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.3.1/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				hash: true,
+				center: true,
+				width: '100%',
+				height: '100%',
+				autoSlide: 0, 
+            autoPlayMedia: null, 
+            controls: true, 
+            progress: true, 
+            history: true, 
+            keyboard: true, 
+            overview: true, 
+            touch: true, 
+            loop: false, 
+            rtl: false, 
+            fragments: true, 
+            fragmentInURL: false, 
+            embedded: false, 
+            showNotes: false, 
+            autoSlideStoppable: true, 
+            mouseWheel: false, 
+            hideAddressBar: true, 
+            previewLinks: false, 
+            transition: 'slide', 
+            transitionSpeed: 'default', 
+            backgroundTransition: 'fade', 
+            viewDistance: 3, 
+            parallaxBackgroundImage: '', 
+            parallaxBackgroundSize: '', 
+            parallaxBackgroundHorizontal: null, 
+            parallaxBackgroundVertical: null, 
+            display: 'block', 
+            margin: 0, /* Убираем отступы между слайдами */
+            minScale: 0.2, /* Минимальный масштаб для адаптивности */
+            maxScale: 1.5, /* Максимальный масштаб */
+            autoAdjustHeight: true
+			});
+		</script>
+	</body>
+</html>
