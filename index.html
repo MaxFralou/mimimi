@@ -41,12 +41,12 @@
     /* Для веб-отображения: */
     padding: 20px; /* Добавляем небольшой внутренний отступ для контента */
     width: 90%; /* Ширина контента слайда */
-    max-width: 1000px; /* Максимальная ширина для больших экранов */
+    max-width: 100%; /* Максимальная ширина для больших экранов */
     box-sizing: border-box; /* Учитываем padding и border в ширине */
     display: flex; /* Используем flexbox для внутреннего расположения */
     flex-direction: column; /* Элементы идут сверху вниз */
-    justify-content: center; /* Центрируем по вертикали */
-    align-items: center; /* Центрируем по горизонтали */
+    justify-content: center;
+    align-items: center;
     text-align: center; /* Текст внутри слайда по центру */
     min-height: 100%; /* Убедимся, что секция занимает всю высоту */
     margin: 0; /* Сброс margin */
@@ -257,6 +257,17 @@
     margin-right: auto;
 }
 
+/* Стили для слайда с таблицей */
+.slide-table iframe {
+    width: 90%;
+    height: 80vh; /* Занимает 80% высоты viewport */
+    border: none; /* Убираем стандартную рамку iframe */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Добавляем тень для эстетики */
+    border-radius: 10px; /* Скругленные углы */
+    margin-top: 1em;
+}
+
+
 /* ------------------------------------------- */
 /* Адаптивность (Media Queries) для экрана */
 /* ------------------------------------------- */
@@ -279,6 +290,10 @@
     .slide-contacts .contact-logo { max-width: 200px; }
     .slide-contacts h2 { font-size: 1.5em; }
     .cta-link { font-size: 1.2em; padding: 12px 25px; }
+    .slide-table iframe {
+        width: 100%;
+        height: 70vh; /* Меньше на мобильных, чтобы уместить заголовок */
+    }
 }
 
 @media (min-width: 769px) and (max-width: 1200px) {
@@ -350,7 +365,7 @@
         transition: none !important;
         box-shadow: none !important;
         border: none !important;
-        background: none !important; /* Убедимся, что фон секции прозрачный */
+        background: none !important; /* Убежимся, что фон секции прозрачный */
         background-color: transparent !important;
     }
 
@@ -420,18 +435,20 @@
         box-shadow: none !important; /* Убираем тени */
     }
 
-    /* Градиентный текст: Если при печати плохо видно, можно сделать сплошным */
-    /*
-    .gradient-text {
-        -webkit-text-fill-color: #6a82fb !important;
-        background: none !important;
-    }
-    */
+
 
     /* Определение размера страницы и полей */
     @page {
         size: A4 landscape; /* Или portrait, если предпочитаете вертикальный формат */
         margin: 0; /* Убираем стандартные поля браузера */
+    }
+
+
+    .slide-table iframe {
+        width: 95% !important; /* Почти полная ширина */
+        height: 90vh !important; /* Почти полная высота страницы */
+        box-shadow: none !important;
+        border: 1px solid #eee !important; /* Легкая рамка */
     }
 }
 </style>
@@ -460,7 +477,7 @@
 
 				<!-- Слайд 4: Решение - MiMiMi -->
 				<section class="slide-solution">
-					<h2 class="gradient-text">Решение: MiMiMi.by</h2>
+					<h2 class="">Решение: <span style="color: #fc5c7d;">MiMiMi.by</span></h2>
 					<p>Место, где встречаются таланты и ценители</p>
 					<img src="3.jpg" alt="Solution Mockup" class="card-image">
 				</section>
@@ -522,6 +539,11 @@
 					</a>
 				</section>
 
+                <!-- Слайд 10: Таблица из Google Sheets (Добавлен новый слайд) -->
+                <section class="slide-table">
+                    <iframe src="https://docs.google.com/spreadsheets/d/1-AwcLP2eAlyloy5ME6r1Q7j-Ovno7RsM7i1Qy3Vc-OQ/edit?usp=sharing" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                </section>
+
 			</div>
 		</div>
 
@@ -560,9 +582,9 @@
             parallaxBackgroundHorizontal: null,
             parallaxBackgroundVertical: null,
             display: 'block',
-            margin: 0, /* Убираем отступы между слайдами */
-            minScale: 0.2, /* Минимальный масштаб для адаптивности */
-            maxScale: 1.5, /* Максимальный масштаб */
+            margin: 0, 
+            minScale: 0.2, 
+            maxScale: 1.5,
             autoAdjustHeight: true
 			
 			});
